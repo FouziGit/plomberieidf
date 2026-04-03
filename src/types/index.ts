@@ -24,6 +24,8 @@ export type Zone = {
   name: string;
   code: string;
   cities: string[];
+  geo?: { lat: number; lng: number };
+  responseTime?: string;
 };
 
 export type PricingTier = {

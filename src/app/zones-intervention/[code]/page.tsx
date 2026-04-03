@@ -11,22 +11,15 @@ import {
   Star,
   MapPin,
   Zap,
-  Droplets,
-  RotateCcw,
-  Flame,
   Wrench,
-  Bath,
-  AlertTriangle,
   ArrowRight,
 } from "lucide-react";
 import { company } from "@/data/company";
+import { phoneHref, whatsappHref, whatsappHrefWithText } from "@/lib/contact";
 import { zones, getZoneByCode } from "@/data/zones";
 import { serviceCategories } from "@/data/services";
 import { faqs } from "@/data/pricing";
-
-const iconMap: Record<string, React.ElementType> = {
-  Droplets, RotateCcw, Flame, Wrench, Bath, AlertTriangle,
-};
+import { iconMap } from "@/lib/icons";
 
 /* ─── Metadata dynamique ─── */
 export async function generateMetadata({ params }: { params: Promise<{ code: string }> }): Promise<Metadata> {
@@ -35,21 +28,39 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
   if (!zone) return { title: "Zone non trouvée" };
 
   const city = zone.cities[0];
+  const delay = (zone.responseTime ?? "45 minutes").replace(" minutes", "");
   return {
-    title: `Plombier ${zone.name} (${zone.code}) | Dépannage Urgence 24h/24 - Plomberie IDF`,
-    description: `Plombier qualifié en ${zone.name} (${zone.code}). Intervention d'urgence en 30 minutes à ${city} et dans tout le ${zone.code}. Fuite d'eau, débouchage, chauffe-eau. Devis gratuit, artisan certifié.`,
+    title: `Plombier ${zone.name} (${zone.code}) | Urgence 24h/24 - Dès 80€`,
+    description: `Plombier urgence ${zone.name} (${zone.code}) — arrivée en ${delay} min. Fuite d'eau, débouchage, chauffe-eau à ${city} et ${zone.cities.length} villes du ${zone.code}. Devis gratuit, artisan certifié Qualibat. 4.9/5 sur 523 avis. ☎ 07 65 82 26 26`,
     keywords: [
       `plombier ${zone.name.toLowerCase()}`,
       `plombier ${zone.code}`,
-      `dépannage plomberie ${zone.name.toLowerCase()}`,
+      `plombier urgence ${zone.name.toLowerCase()}`,
       `plombier urgence ${zone.code}`,
+      `dépannage plomberie ${zone.name.toLowerCase()}`,
+      `plombier pas cher ${zone.code}`,
+      `fuite eau ${zone.name.toLowerCase()}`,
+      `débouchage ${zone.name.toLowerCase()}`,
       ...zone.cities.slice(0, 5).map(c => `plombier ${c.toLowerCase()}`),
     ],
+    alternates: { canonical: `/zones-intervention/${zone.code}` },
     openGraph: {
       title: `Plombier ${zone.name} (${zone.code}) | Urgence 24h/24`,
-      description: `Intervention rapide en ${zone.name}. ${zone.cities.length} villes couvertes.`,
+      description: `Intervention rapide en ${delay} min dans le ${zone.code}. ${zone.cities.length} villes couvertes. Devis gratuit. 4.9/5.`,
+      url: `https://plomberieidf.fr/zones-intervention/${zone.code}`,
       type: "website",
       locale: "fr_FR",
+    },
+    twitter: {
+      card: "summary",
+      title: `Plombier ${zone.name} (${zone.code}) | 24h/24`,
+      description: `Dépannage plomberie en ${delay} min dans le ${zone.code}. ☎ 07 65 82 26 26`,
+    },
+    other: {
+      "geo.region": `FR-${zone.code}`,
+      "geo.placename": zone.name,
+      ...(zone.geo && { "geo.position": `${zone.geo.lat};${zone.geo.lng}` }),
+      ...(zone.geo && { "ICBM": `${zone.geo.lat}, ${zone.geo.lng}` }),
     },
   };
 }
@@ -121,7 +132,7 @@ export default async function ZonePage({ params }: { params: Promise<{ code: str
   const localFaqs = [
     {
       question: `Quel est le délai d'intervention d'un plombier en ${zone.name} ?`,
-      answer: `Nous garantissons une arrivée en moins de ${code === "75" ? "30" : "45"} minutes dans le département ${zone.code}, y compris à ${mainCity} et dans les villes environnantes. Notre service est disponible 24h/24 et 7j/7, y compris les jours fériés.`,
+      answer: `Nous garantissons une arrivée en moins de ${zone.responseTime ?? "45 minutes"} dans le département ${zone.code}, y compris à ${mainCity} et dans les villes environnantes. Notre service est disponible 24h/24 et 7j/7, y compris les jours fériés.`,
     },
     {
       question: `Proposez-vous un devis gratuit dans le ${zone.code} ?`,
@@ -171,14 +182,14 @@ export default async function ZonePage({ params }: { params: Promise<{ code: str
 
               <div className="mt-8 flex flex-col sm:flex-row gap-3">
                 <a
-                  href={`tel:${company.phone.raw}`}
+                  href={phoneHref}
                   className="relative inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl text-base font-bold text-white bg-accent-primary hover:bg-accent-primary-dark shadow-xl shadow-accent-primary/25 transition-all pulse-ring"
                 >
                   <Phone className="w-5 h-5" />
                   {company.phone.display}
                 </a>
                 <a
-                  href={`https://wa.me/${company.whatsapp.number}?text=${encodeURIComponent(`Bonjour, j'ai besoin d'un plombier dans le ${zone.code} - ${mainCity}.`)}`}
+                  href={whatsappHrefWithText(`Bonjour, j'ai besoin d'un plombier dans le ${zone.code} - ${mainCity}.`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl text-base font-bold text-white bg-accent-green hover:bg-accent-green/90 shadow-lg transition-all"
@@ -190,7 +201,7 @@ export default async function ZonePage({ params }: { params: Promise<{ code: str
 
               <div className="mt-7 flex flex-wrap gap-5">
                 {[
-                  { icon: Clock, label: `Arrivée en ${code === "75" ? "30" : "45"} min` },
+                  { icon: Clock, label: `Arrivée en ${zone.responseTime ?? "45 minutes"}` },
                   { icon: Shield, label: "Garanti décennal" },
                   { icon: Star, label: `${company.stats.rating}/5 avis` },
                   { icon: CheckCircle2, label: "Devis gratuit" },
@@ -233,7 +244,7 @@ export default async function ZonePage({ params }: { params: Promise<{ code: str
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { icon: Zap, title: "Urgence 24h/24", desc: `Disponible la nuit et le week-end dans tout le ${zone.code}`, color: "text-accent-amber", bg: "bg-amber-50" },
-              { icon: Clock, title: code === "75" ? "30 min" : "45 min", desc: `Délai d'intervention garanti dans le ${zone.code}`, color: "text-accent-primary", bg: "bg-blue-50" },
+              { icon: Clock, title: zone.responseTime ?? "45 minutes", desc: `Délai d'intervention garanti dans le ${zone.code}`, color: "text-accent-primary", bg: "bg-blue-50" },
               { icon: Shield, title: "Garantie décennale", desc: "RC Pro + garantie décennale sur tous travaux", color: "text-accent-green", bg: "bg-green-50" },
               { icon: CheckCircle2, title: "Devis gratuit", desc: "Prix fixé avant l'intervention, sans surprise", color: "text-accent-primary", bg: "bg-blue-50" },
             ].map((item) => (
@@ -296,18 +307,18 @@ export default async function ZonePage({ params }: { params: Promise<{ code: str
             Urgence plomberie en {zone.name} ?
           </h2>
           <p className="mt-3 text-white/80 max-w-xl mx-auto">
-            Nos plombiers arrivent en {code === "75" ? "30" : "45"} minutes dans le {zone.code}, 24h/24 et 7j/7.
+            Nos plombiers arrivent en {zone.responseTime ?? "45 minutes"} dans le {zone.code}, 24h/24 et 7j/7.
           </p>
           <div className="mt-7 flex flex-col sm:flex-row justify-center gap-4">
             <a
-              href={`tel:${company.phone.raw}`}
+              href={phoneHref}
               className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl text-base font-bold text-accent-primary bg-white hover:bg-gray-50 shadow-xl transition-all"
             >
               <Phone className="w-5 h-5" />
               {company.phone.display}
             </a>
             <a
-              href={`https://wa.me/${company.whatsapp.number}`}
+              href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl text-base font-bold text-white border-2 border-white/40 hover:bg-white/10 transition-all"
@@ -373,27 +384,44 @@ export default async function ZonePage({ params }: { params: Promise<{ code: str
         </div>
       </section>
 
-      {/* ═══ Schema.org JSON-LD ═══ */}
+      {/* ═══ Schema.org JSON-LD — Plumber ═══ */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
-        "@type": "Plumber",
+        "@type": ["Plumber", "LocalBusiness"],
         name: `${company.name} — ${zone.name}`,
         description: ctx.desc,
         telephone: company.phone.international,
         email: company.email,
         url: `https://plomberieidf.fr/zones-intervention/${zone.code}`,
+        image: "https://images.pexels.com/photos/6419128/pexels-photo-6419128.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+        priceRange: company.priceRange,
+        currenciesAccepted: "EUR",
+        paymentAccepted: company.paymentMethods.join(", "),
         address: {
           "@type": "PostalAddress",
           streetAddress: company.address.street,
           addressLocality: company.address.city,
           postalCode: company.address.zip,
+          addressRegion: company.address.region,
           addressCountry: "FR",
         },
+        ...(zone.geo && {
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: zone.geo.lat,
+            longitude: zone.geo.lng,
+          },
+        }),
         areaServed: zone.cities.map((city) => ({
           "@type": "City",
           name: city,
           containedInPlace: { "@type": "AdministrativeArea", name: zone.name },
         })),
+        serviceArea: {
+          "@type": "AdministrativeArea",
+          name: zone.name,
+          ...(zone.geo && { geo: { "@type": "GeoCoordinates", latitude: zone.geo.lat, longitude: zone.geo.lng } }),
+        },
         openingHoursSpecification: {
           "@type": "OpeningHoursSpecification",
           dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
@@ -405,6 +433,7 @@ export default async function ZonePage({ params }: { params: Promise<{ code: str
           ratingValue: company.stats.rating,
           reviewCount: company.stats.reviews,
           bestRating: 5,
+          worstRating: 1,
         },
         hasOfferCatalog: {
           "@type": "OfferCatalog",
@@ -419,14 +448,28 @@ export default async function ZonePage({ params }: { params: Promise<{ code: str
             },
           })),
         },
+        knowsAbout: [
+          `Plomberie ${zone.name}`,
+          `Dépannage plomberie ${zone.code}`,
+          `Fuite d'eau ${zone.name}`,
+          `Débouchage ${zone.name}`,
+          `Chauffe-eau ${zone.name}`,
+        ],
+        hasCredential: company.certifications.map((cert) => ({
+          "@type": "EducationalOccupationalCredential",
+          credentialCategory: "certification",
+          name: cert,
+        })),
+        isRelatedTo: { "@id": "https://plomberieidf.fr/#organization" },
+        mainEntityOfPage: `https://plomberieidf.fr/zones-intervention/${zone.code}`,
       })}} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Accueil", item: "/" },
-          { "@type": "ListItem", position: 2, name: "Zones d'intervention", item: "/zones-intervention" },
-          { "@type": "ListItem", position: 3, name: `${zone.name} (${zone.code})` },
+          { "@type": "ListItem", position: 1, name: "Accueil", item: "https://plomberieidf.fr/" },
+          { "@type": "ListItem", position: 2, name: "Zones d'intervention", item: "https://plomberieidf.fr/zones-intervention" },
+          { "@type": "ListItem", position: 3, name: `${zone.name} (${zone.code})`, item: `https://plomberieidf.fr/zones-intervention/${zone.code}` },
         ],
       })}} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({

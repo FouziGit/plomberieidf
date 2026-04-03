@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { Phone, Mail, MapPin, Clock, Droplets, MessageCircle } from "lucide-react";
 import { company } from "@/data/company";
+import { phoneHref, whatsappHref, emailHref } from "@/lib/contact";
 import { serviceCategories } from "@/data/services";
 import { zones } from "@/data/zones";
 
 export function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* About */}
           <div>
@@ -79,7 +80,7 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href={`tel:${company.phone.raw}`}
+                  href={phoneHref}
                   className="flex items-center gap-2.5 text-sm text-gray-400 hover:text-accent-primary-light transition-colors"
                 >
                   <Phone className="w-4 h-4 flex-shrink-0" />
@@ -88,7 +89,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href={`https://wa.me/${company.whatsapp.number}`}
+                  href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2.5 text-sm text-gray-400 hover:text-accent-green transition-colors"
@@ -99,7 +100,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href={`mailto:${company.email}`}
+                  href={emailHref}
                   className="flex items-center gap-2.5 text-sm text-gray-400 hover:text-accent-primary-light transition-colors"
                 >
                   <Mail className="w-4 h-4 flex-shrink-0" />
@@ -112,7 +113,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2.5 text-sm text-gray-400">
                 <Clock className="w-4 h-4 flex-shrink-0" />
-                {company.businessHours}
+                {company.officeHours}
               </li>
             </ul>
           </div>

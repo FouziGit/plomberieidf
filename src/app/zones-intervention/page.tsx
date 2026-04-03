@@ -1,11 +1,19 @@
 import Link from "next/link";
 import { MapPin, Phone, MessageCircle, Clock, Shield, ChevronRight, CheckCircle2, Zap, ArrowRight } from "lucide-react";
 import { company } from "@/data/company";
+import { phoneHref, whatsappHref } from "@/lib/contact";
 import { zones, totalCities } from "@/data/zones";
 
 export const metadata = {
   title: "Zones d'intervention — Plombier Paris & Île-de-France | Plomberie IDF",
   description: `Plomberie IDF intervient dans les 8 départements d'Île-de-France. ${totalCities}+ villes couvertes. Urgence 24h/24, intervention en 30 min à Paris, 45 min en IDF.`,
+  alternates: { canonical: "/zones-intervention" },
+  openGraph: {
+    title: "Zones d'intervention — Plombier Paris & Île-de-France",
+    description: `${totalCities}+ villes couvertes en Île-de-France. Urgence 24h/24.`,
+    type: "website" as const,
+    locale: "fr_FR",
+  },
 };
 
 export default function ZonesPage() {
@@ -35,14 +43,14 @@ export default function ZonesPage() {
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <a
-                href={`tel:${company.phone.raw}`}
+                href={phoneHref}
                 className="inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl text-base font-bold text-white bg-accent-primary hover:bg-accent-primary-dark shadow-xl shadow-accent-primary/25 transition-all"
               >
                 <Phone className="w-5 h-5" />
                 {company.phone.display}
               </a>
               <a
-                href={`https://wa.me/${company.whatsapp.number}`}
+                href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl text-base font-bold text-white bg-accent-green hover:bg-accent-green/90 transition-all"
@@ -128,14 +136,14 @@ export default function ZonesPage() {
           </p>
           <div className="mt-7 flex flex-col sm:flex-row justify-center gap-4">
             <a
-              href={`tel:${company.phone.raw}`}
+              href={phoneHref}
               className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl text-base font-bold text-accent-primary bg-white hover:bg-gray-50 shadow-xl transition-all"
             >
               <Phone className="w-5 h-5" />
               {company.phone.display}
             </a>
             <a
-              href={`https://wa.me/${company.whatsapp.number}`}
+              href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl text-base font-bold text-white border-2 border-white/40 hover:bg-white/10 transition-all"
@@ -152,8 +160,8 @@ export default function ZonesPage() {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Accueil", item: "/" },
-          { "@type": "ListItem", position: 2, name: "Zones d'intervention" },
+          { "@type": "ListItem", position: 1, name: "Accueil", item: "https://plomberieidf.fr/" },
+          { "@type": "ListItem", position: 2, name: "Zones d'intervention", item: "https://plomberieidf.fr/zones-intervention" },
         ],
       })}} />
     </div>

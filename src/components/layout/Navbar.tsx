@@ -11,24 +11,13 @@ import {
   Zap,
   MessageCircle,
   ChevronDown,
-  Droplets,
-  RotateCcw,
-  Flame,
   Wrench,
-  Bath,
-  AlertTriangle,
+  Droplets,
 } from "lucide-react";
 import { company } from "@/data/company";
+import { phoneHref, whatsappHref } from "@/lib/contact";
 import { serviceCategories } from "@/data/services";
-
-const iconMap: Record<string, React.ElementType> = {
-  Droplets,
-  RotateCcw,
-  Flame,
-  Wrench,
-  Bath,
-  AlertTriangle,
-};
+import { iconMap } from "@/lib/icons";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -36,9 +25,16 @@ export function Navbar() {
   const [servicesOpen, setServicesOpen] = useState(false);
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 20);
+    let rafId: number;
+    const handler = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => setScrolled(window.scrollY > 20));
+    };
     window.addEventListener("scroll", handler, { passive: true });
-    return () => window.removeEventListener("scroll", handler);
+    return () => {
+      window.removeEventListener("scroll", handler);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
@@ -56,14 +52,14 @@ export function Navbar() {
           </div>
           <div className="flex items-center gap-4">
             <a
-              href={`tel:${company.phone.raw}`}
+              href={phoneHref}
               className="flex items-center gap-1.5 font-bold hover:underline"
             >
               <Phone className="w-3.5 h-3.5" />
               {company.phone.display}
             </a>
             <a
-              href={`https://wa.me/${company.whatsapp.number}`}
+              href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:flex items-center gap-1.5 hover:underline"
@@ -188,7 +184,7 @@ export function Navbar() {
             {/* Desktop CTA */}
             <div className="hidden lg:flex items-center gap-3">
               <a
-                href={`https://wa.me/${company.whatsapp.number}`}
+                href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-accent-green border border-accent-green/30 hover:bg-accent-green/5 transition-all"
@@ -197,7 +193,7 @@ export function Navbar() {
                 WhatsApp
               </a>
               <a
-                href={`tel:${company.phone.raw}`}
+                href={phoneHref}
                 className="relative flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-accent-primary hover:bg-accent-primary-dark shadow-lg shadow-accent-primary/20 transition-all pulse-ring"
               >
                 <Phone className="w-4 h-4" />
@@ -208,7 +204,7 @@ export function Navbar() {
             {/* Mobile buttons */}
             <div className="flex lg:hidden items-center gap-2">
               <a
-                href={`tel:${company.phone.raw}`}
+                href={phoneHref}
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold text-white bg-accent-primary"
               >
                 <Phone className="w-3.5 h-3.5" />
@@ -296,7 +292,7 @@ export function Navbar() {
 
                 <div className="pt-2 flex gap-2">
                   <a
-                    href={`https://wa.me/${company.whatsapp.number}`}
+                    href={whatsappHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold text-white bg-accent-green"
@@ -305,7 +301,7 @@ export function Navbar() {
                     WhatsApp
                   </a>
                   <a
-                    href={`tel:${company.phone.raw}`}
+                    href={phoneHref}
                     className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold text-white bg-accent-primary"
                   >
                     <Phone className="w-4 h-4" />

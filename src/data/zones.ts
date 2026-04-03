@@ -4,6 +4,8 @@ export const zones: Zone[] = [
   {
     name: "Paris",
     code: "75",
+    geo: { lat: 48.8566, lng: 2.3522 },
+    responseTime: "30 minutes",
     cities: [
       "Paris 1er",
       "Paris 2e",
@@ -30,6 +32,8 @@ export const zones: Zone[] = [
   {
     name: "Hauts-de-Seine",
     code: "92",
+    geo: { lat: 48.8499, lng: 2.2370 },
+    responseTime: "45 minutes",
     cities: [
       "Boulogne-Billancourt",
       "Nanterre",
@@ -51,6 +55,8 @@ export const zones: Zone[] = [
   {
     name: "Seine-Saint-Denis",
     code: "93",
+    geo: { lat: 48.9280, lng: 2.4818 },
+    responseTime: "45 minutes",
     cities: [
       "Montreuil",
       "Saint-Denis",
@@ -72,6 +78,8 @@ export const zones: Zone[] = [
   {
     name: "Val-de-Marne",
     code: "94",
+    geo: { lat: 48.7741, lng: 2.4627 },
+    responseTime: "45 minutes",
     cities: [
       "Créteil",
       "Vincennes",
@@ -93,6 +101,8 @@ export const zones: Zone[] = [
   {
     name: "Seine-et-Marne",
     code: "77",
+    geo: { lat: 48.5888, lng: 2.9077 },
+    responseTime: "45 minutes",
     cities: [
       "Meaux",
       "Chelles",
@@ -109,6 +119,8 @@ export const zones: Zone[] = [
   {
     name: "Yvelines",
     code: "78",
+    geo: { lat: 48.8014, lng: 1.9875 },
+    responseTime: "45 minutes",
     cities: [
       "Versailles",
       "Saint-Germain-en-Laye",
@@ -125,6 +137,8 @@ export const zones: Zone[] = [
   {
     name: "Essonne",
     code: "91",
+    geo: { lat: 48.5291, lng: 2.3440 },
+    responseTime: "45 minutes",
     cities: [
       "Évry-Courcouronnes",
       "Corbeil-Essonnes",
@@ -141,6 +155,8 @@ export const zones: Zone[] = [
   {
     name: "Val-d'Oise",
     code: "95",
+    geo: { lat: 49.0607, lng: 2.0807 },
+    responseTime: "45 minutes",
     cities: [
       "Argenteuil",
       "Cergy",

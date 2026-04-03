@@ -1,7 +1,7 @@
 import type { ServiceCategory } from "@/types";
 
 // Pexels CDN helper
-const px = (id: number, w = 800, h = 500) =>
+const px = (id: number, w = 1200, h = 800) =>
   `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}&h=${h}&fit=crop`;
 
 export const serviceCategories: ServiceCategory[] = [
@@ -407,18 +407,6 @@ export const serviceCategories: ServiceCategory[] = [
     ],
   },
 ];
-
-export const allServices = serviceCategories.flatMap((cat) =>
-  cat.services.map((s) => ({
-    ...s,
-    categoryId: cat.id,
-    categoryTitle: cat.title,
-  }))
-);
-
-export function getServiceBySlug(slug: string) {
-  return allServices.find((s) => s.id === slug);
-}
 
 export function getCategoryBySlug(slug: string) {
   return serviceCategories.find((c) => c.id === slug);

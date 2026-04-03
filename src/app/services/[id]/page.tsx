@@ -1,8 +1,7 @@
-"use client";
-
-import { useParams } from "next/navigation";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import Image from "next/image";
 import {
   Phone,
   MessageCircle,
@@ -13,45 +12,46 @@ import {
   Star,
   Zap,
   ArrowRight,
-  Droplets,
-  RotateCcw,
-  Flame,
   Wrench,
-  Bath,
-  AlertTriangle,
 } from "lucide-react";
 import { company } from "@/data/company";
+import { phoneHref, whatsappHref, whatsappHrefWithText } from "@/lib/contact";
 import { serviceCategories, getCategoryBySlug } from "@/data/services";
+import { iconMap } from "@/lib/icons";
 
-const iconMap: Record<string, React.ElementType> = {
-  Droplets,
-  RotateCcw,
-  Flame,
-  Wrench,
-  Bath,
-  AlertTriangle,
-};
+export async function generateStaticParams() {
+  return serviceCategories.map((cat) => ({ id: cat.id }));
+}
 
-export default function ServicePage() {
-  const params = useParams();
-  const id = params.id as string;
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const category = getCategoryBySlug(id);
+  if (!category) return { title: "Service non trouvé" };
+  const minPrice = Math.min(...category.services.map((s) => s.priceFrom));
+  return {
+    title: `${category.title} Paris & IDF | Dès ${minPrice}€ - Plombier 24h/24`,
+    description: `${category.description} Intervention en 30 min à Paris. Devis gratuit, à partir de ${minPrice}€. Artisan certifié Qualibat, garantie décennale. ☎ 07 65 82 26 26`,
+    alternates: { canonical: `/services/${id}` },
+    openGraph: {
+      title: `${category.title} Paris & IDF | Dès ${minPrice}€`,
+      description: `${category.description} ${company.stats.rating}/5 sur ${company.stats.reviews} avis. Devis gratuit.`,
+      url: `https://plomberieidf.fr/services/${id}`,
+      type: "website",
+      locale: "fr_FR",
+    },
+    twitter: {
+      card: "summary",
+      title: `${category.title} Paris & IDF | Dès ${minPrice}€`,
+      description: `${category.description} ☎ 07 65 82 26 26`,
+    },
+  };
+}
+
+export default async function ServicePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const category = getCategoryBySlug(id);
 
-  if (!category) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Service non trouvé</h1>
-          <Link
-            href="/"
-            className="text-accent-primary hover:text-accent-primary-light transition-colors"
-          >
-            Retour à l&apos;accueil
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  if (!category) notFound();
 
   const Icon = iconMap[category.icon] || Wrench;
   const otherCategories = serviceCategories.filter((c) => c.id !== id);
@@ -65,7 +65,7 @@ export default function ServicePage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-xs text-foreground/40 mb-8">
+          <nav className="flex items-center gap-2 text-xs text-foreground/40 mb-8" aria-label="Fil d'Ariane">
             <Link href="/" className="hover:text-accent-primary transition-colors">
               Accueil
             </Link>
@@ -79,9 +79,7 @@ export default function ServicePage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+              <div
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium mb-6"
                 style={{
                   backgroundColor: `${category.colorHex}15`,
@@ -91,41 +89,26 @@ export default function ServicePage() {
               >
                 <Icon className="w-3.5 h-3.5" />
                 {category.subtitle}
-              </motion.div>
+              </div>
 
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-3xl sm:text-4xl lg:text-5xl font-extrabold"
-              >
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold">
                 <span className="text-gradient">{category.title}</span>
-              </motion.h1>
+              </h1>
 
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="mt-4 text-lg text-foreground/60 leading-relaxed"
-              >
+              <p className="mt-4 text-lg text-foreground/60 leading-relaxed">
                 {category.description}
-              </motion.p>
+              </p>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="mt-8 flex flex-col sm:flex-row gap-4"
-              >
+              <div className="mt-8 flex flex-col sm:flex-row gap-4">
                 <a
-                  href={`tel:${company.phone.raw}`}
+                  href={phoneHref}
                   className="relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl text-base font-bold text-brand-dark bg-gradient-to-r from-accent-amber to-accent-amber-light hover:shadow-2xl hover:shadow-accent-amber/30 transition-all pulse-ring"
                 >
                   <Phone className="w-5 h-5" />
                   {company.phone.display}
                 </a>
                 <a
-                  href={`https://wa.me/${company.whatsapp.number}`}
+                  href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl text-base font-bold text-white bg-accent-green hover:bg-accent-green/90 transition-all"
@@ -133,14 +116,9 @@ export default function ServicePage() {
                   <MessageCircle className="w-5 h-5" />
                   Devis gratuit
                 </a>
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="mt-8 flex flex-wrap gap-4 text-xs text-foreground/40"
-              >
+              <div className="mt-8 flex flex-wrap gap-4 text-xs text-foreground/40">
                 <span className="flex items-center gap-1.5">
                   <Clock className="w-4 h-4 text-accent-primary" />
                   Intervention en {company.responseTime}
@@ -153,27 +131,25 @@ export default function ServicePage() {
                   <Star className="w-4 h-4 text-accent-amber" />
                   {company.stats.rating}/5
                 </span>
-              </motion.div>
+              </div>
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="relative hidden lg:block"
-            >
+            <div className="relative hidden lg:block">
               <div className="rounded-2xl overflow-hidden border border-brand-border/30 shadow-2xl">
-                <img
+                <Image
                   src={category.image}
-                  alt={category.title}
+                  alt={`${category.title} — plombier professionnel Paris et Île-de-France`}
+                  width={800}
+                  height={500}
                   className="w-full h-[400px] object-cover"
+                  priority
                 />
               </div>
               <div
                 className="absolute -bottom-4 -right-4 w-24 h-24 rounded-full blur-[40px] pointer-events-none"
                 style={{ backgroundColor: `${category.colorHex}30` }}
               />
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -181,37 +157,30 @@ export default function ServicePage() {
       {/* ═══ SERVICES LIST ═══ */}
       <section className="py-20 lg:py-28 border-t border-brand-border/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
+          <div className="text-center mb-16">
             <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: category.colorHex }}>
               Nos prestations
             </span>
             <h2 className="mt-3 text-3xl sm:text-4xl font-extrabold">
               Détail des <span className="text-gradient">services</span>
             </h2>
-          </motion.div>
+          </div>
 
           <div className="space-y-8">
-            {category.services.map((service, i) => (
-              <motion.div
+            {category.services.map((service) => (
+              <div
                 key={service.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
                 className="glass rounded-2xl overflow-hidden card-hover"
               >
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
                   {/* Image */}
                   <div className="relative h-[220px] lg:h-auto">
-                    <img
+                    <Image
                       src={service.image}
-                      alt={service.title}
-                      className="absolute inset-0 w-full h-full object-cover"
+                      alt={`${service.title} — ${category.title}`}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 33vw"
+                      className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent to-brand-dark/50 lg:bg-gradient-to-r lg:from-transparent lg:to-brand-dark/80" />
                   </div>
@@ -253,14 +222,14 @@ export default function ServicePage() {
 
                     <div className="flex flex-wrap gap-3">
                       <a
-                        href={`tel:${company.phone.raw}`}
+                        href={phoneHref}
                         className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-brand-dark bg-gradient-to-r from-accent-amber to-accent-amber-light hover:shadow-lg hover:shadow-accent-amber/20 transition-all"
                       >
                         <Phone className="w-4 h-4" />
                         Appeler
                       </a>
                       <a
-                        href={`https://wa.me/${company.whatsapp.number}?text=${encodeURIComponent(`Bonjour, je souhaite un devis pour : ${service.title}`)}`}
+                        href={whatsappHrefWithText(`Bonjour, je souhaite un devis pour : ${service.title}`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-accent-green hover:bg-accent-green/90 transition-all"
@@ -271,7 +240,7 @@ export default function ServicePage() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -280,108 +249,125 @@ export default function ServicePage() {
       {/* ═══ URGENCY CTA ═══ */}
       <section className="py-16 bg-gradient-to-r from-accent-primary/10 via-brand-surface to-accent-amber/10 border-y border-brand-border/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-          >
-            <Zap className="w-10 h-10 text-accent-amber mx-auto mb-4" />
-            <h2 className="text-2xl sm:text-3xl font-extrabold">
-              Besoin d&apos;une intervention <span className="text-gradient-amber">rapide</span> ?
-            </h2>
-            <p className="mt-3 text-foreground/60 max-w-xl mx-auto">
-              Nos plombiers sont disponibles 24h/24 pour tous vos besoins en {category.title.toLowerCase()}.
-            </p>
-            <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-              <a
-                href={`tel:${company.phone.raw}`}
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl text-base font-bold text-brand-dark bg-gradient-to-r from-accent-amber to-accent-amber-light hover:shadow-2xl hover:shadow-accent-amber/30 transition-all pulse-ring"
-              >
-                <Phone className="w-5 h-5" />
-                {company.phone.display}
-              </a>
-              <a
-                href={`https://wa.me/${company.whatsapp.number}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl text-base font-bold text-white bg-accent-green hover:bg-accent-green/90 transition-all"
-              >
-                <MessageCircle className="w-5 h-5" />
-                WhatsApp
-              </a>
-            </div>
-          </motion.div>
+          <Zap className="w-10 h-10 text-accent-amber mx-auto mb-4" />
+          <h2 className="text-2xl sm:text-3xl font-extrabold">
+            Besoin d&apos;une intervention <span className="text-gradient-amber">rapide</span> ?
+          </h2>
+          <p className="mt-3 text-foreground/60 max-w-xl mx-auto">
+            Nos plombiers sont disponibles 24h/24 pour tous vos besoins en {category.title.toLowerCase()}.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+            <a
+              href={phoneHref}
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl text-base font-bold text-brand-dark bg-gradient-to-r from-accent-amber to-accent-amber-light hover:shadow-2xl hover:shadow-accent-amber/30 transition-all pulse-ring"
+            >
+              <Phone className="w-5 h-5" />
+              {company.phone.display}
+            </a>
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl text-base font-bold text-white bg-accent-green hover:bg-accent-green/90 transition-all"
+            >
+              <MessageCircle className="w-5 h-5" />
+              WhatsApp
+            </a>
+          </div>
         </div>
       </section>
 
       {/* ═══ OTHER SERVICES ═══ */}
       <section className="py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
+          <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-extrabold">
               Autres <span className="text-gradient">services</span>
             </h2>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {otherCategories.slice(0, 3).map((cat, i) => {
+            {otherCategories.slice(0, 3).map((cat) => {
               const CatIcon = iconMap[cat.icon] || Wrench;
               return (
-                <motion.div
+                <Link
                   key={cat.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
+                  href={`/services/${cat.id}`}
+                  className="block glass rounded-2xl p-6 card-hover group h-full"
                 >
-                  <Link
-                    href={`/services/${cat.id}`}
-                    className="block glass rounded-2xl p-6 card-hover group h-full"
+                  <div
+                    className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
+                    style={{ backgroundColor: `${cat.colorHex}15` }}
                   >
-                    <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
-                      style={{ backgroundColor: `${cat.colorHex}15` }}
-                    >
-                      <CatIcon className="w-5 h-5" style={{ color: cat.colorHex }} />
-                    </div>
-                    <h3 className="text-base font-bold text-foreground group-hover:text-accent-primary transition-colors">
-                      {cat.title}
-                    </h3>
-                    <p className="mt-1 text-xs text-foreground/50">{cat.subtitle}</p>
-                    <div className="mt-3 flex items-center gap-1 text-sm font-medium text-accent-primary">
-                      Voir
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </Link>
-                </motion.div>
+                    <CatIcon className="w-5 h-5" style={{ color: cat.colorHex }} />
+                  </div>
+                  <h3 className="text-base font-bold text-foreground group-hover:text-accent-primary transition-colors">
+                    {cat.title}
+                  </h3>
+                  <p className="mt-1 text-xs text-foreground/50">{cat.subtitle}</p>
+                  <div className="mt-3 flex items-center gap-1 text-sm font-medium text-accent-primary">
+                    Voir
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </Link>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* Schema.org */}
+      {/* Schema.org — Service */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Service",
-            name: category.title,
+            name: `${category.title} Paris & Île-de-France`,
             description: category.description,
+            url: `https://plomberieidf.fr/services/${id}`,
+            image: category.image,
+            serviceType: category.title,
             provider: {
+              "@id": "https://plomberieidf.fr/#organization",
               "@type": "Plumber",
               name: company.name,
               telephone: company.phone.international,
+              url: "https://plomberieidf.fr",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: company.address.street,
+                addressLocality: company.address.city,
+                postalCode: company.address.zip,
+                addressRegion: company.address.region,
+                addressCountry: "FR",
+              },
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: company.stats.rating,
+                reviewCount: company.stats.reviews,
+                bestRating: 5,
+              },
             },
             areaServed: {
-              "@type": "AdministrativeArea",
+              "@type": "State",
               name: "Île-de-France",
+              containedInPlace: { "@type": "Country", name: "France" },
+            },
+            availableChannel: {
+              "@type": "ServiceChannel",
+              servicePhone: {
+                "@type": "ContactPoint",
+                telephone: company.phone.international,
+                contactType: "customer service",
+                availableLanguage: company.languages,
+                hoursAvailable: {
+                  "@type": "OpeningHoursSpecification",
+                  dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+                  opens: "00:00",
+                  closes: "23:59",
+                },
+              },
             },
             hasOfferCatalog: {
               "@type": "OfferCatalog",
@@ -394,16 +380,19 @@ export default function ServicePage() {
                   description: s.longDescription,
                 },
                 priceSpecification: {
-                  "@type": "PriceSpecification",
+                  "@type": "UnitPriceSpecification",
                   price: s.priceFrom,
                   priceCurrency: "EUR",
-                  minPrice: s.priceFrom,
+                  unitText: "intervention",
                 },
+                availability: "https://schema.org/InStock",
               })),
             },
+            termsOfService: "Devis gratuit et sans engagement",
           }),
         }}
       />
+      {/* Schema.org — BreadcrumbList */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -411,9 +400,9 @@ export default function ServicePage() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Accueil", item: "/" },
-              { "@type": "ListItem", position: 2, name: "Services", item: "/#services" },
-              { "@type": "ListItem", position: 3, name: category.title },
+              { "@type": "ListItem", position: 1, name: "Accueil", item: "https://plomberieidf.fr/" },
+              { "@type": "ListItem", position: 2, name: "Services", item: "https://plomberieidf.fr/#services" },
+              { "@type": "ListItem", position: 3, name: category.title, item: `https://plomberieidf.fr/services/${id}` },
             ],
           }),
         }}

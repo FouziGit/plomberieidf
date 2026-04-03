@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Phone,
@@ -16,30 +17,18 @@ import {
   Award,
   ThumbsUp,
   MapPin,
-  Droplets,
-  RotateCcw,
-  Flame,
   Wrench,
-  Bath,
-  AlertTriangle,
   Users,
   Send,
   ArrowRight,
   BadgeCheck,
 } from "lucide-react";
 import { company } from "@/data/company";
+import { phoneHref, whatsappHref, whatsappHrefWithText, emailHref } from "@/lib/contact";
 import { serviceCategories } from "@/data/services";
 import { pricingTiers, faqs } from "@/data/pricing";
 import { zones, totalCities } from "@/data/zones";
-
-const iconMap: Record<string, React.ElementType> = {
-  Droplets,
-  RotateCcw,
-  Flame,
-  Wrench,
-  Bath,
-  AlertTriangle,
-};
+import { iconMap } from "@/lib/icons";
 
 /* ─── Counter Animation ─── */
 function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: string }) {
@@ -153,22 +142,26 @@ export default function HomePage() {
                 transition={{ delay: 0.25 }}
                 className="mt-8 flex flex-col sm:flex-row gap-3"
               >
-                <a
-                  href={`tel:${company.phone.raw}`}
-                  className="relative inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl text-base font-bold text-white bg-accent-primary hover:bg-accent-primary-dark shadow-xl shadow-accent-primary/25 transition-all pulse-ring"
+                <motion.a
+                  href={phoneHref}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="relative inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl text-base font-bold text-white bg-accent-primary hover:bg-accent-primary-dark shadow-xl shadow-accent-primary/25 transition-colors pulse-ring"
                 >
                   <Phone className="w-5 h-5" />
                   {company.phone.display}
-                </a>
-                <a
-                  href={`https://wa.me/${company.whatsapp.number}`}
+                </motion.a>
+                <motion.a
+                  href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl text-base font-bold text-white bg-accent-green hover:bg-accent-green/90 shadow-lg transition-all"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl text-base font-bold text-white bg-accent-green hover:bg-accent-green/90 shadow-lg transition-colors"
                 >
                   <MessageCircle className="w-5 h-5" />
                   WhatsApp gratuit
-                </a>
+                </motion.a>
               </motion.div>
 
               {/* Micro-réassurance */}
@@ -200,10 +193,13 @@ export default function HomePage() {
               className="relative hidden lg:block"
             >
               <div className="rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/10 border border-white">
-                <img
-                  src="https://images.pexels.com/photos/6419128/pexels-photo-6419128.jpeg?auto=compress&cs=tinysrgb&w=700&h=520&fit=crop"
-                  alt="Plombier professionnel en intervention Paris"
+                <Image
+                  src="https://images.pexels.com/photos/6419128/pexels-photo-6419128.jpeg?auto=compress&cs=tinysrgb&w=1200&h=900&fit=crop"
+                  alt="Plombier professionnel en intervention à Paris et Île-de-France"
+                  width={700}
+                  height={520}
                   className="w-full h-[520px] object-cover"
+                  priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-3xl" />
               </div>
@@ -266,6 +262,28 @@ export default function HomePage() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════
+          GEO — bloc optimisé pour citation IA
+      ═══════════════════════════════════════ */}
+      <section className="py-14 border-b border-gray-100 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <article className="prose prose-sm max-w-none text-foreground/60 leading-relaxed">
+            <h2 className="text-xl font-bold text-foreground mb-4">
+              Plomberie IDF : votre plombier de confiance à Paris et en Île-de-France
+            </h2>
+            <p>
+              <strong>Plomberie IDF</strong> est une entreprise de plomberie fondée en 2011, basée au 75 Rue de Lourmel dans le 15e arrondissement de Paris. Spécialisée dans le <strong>dépannage d&apos;urgence 24h/24 et 7j/7</strong>, l&apos;entreprise intervient dans les 8 départements d&apos;Île-de-France : Paris (75), Hauts-de-Seine (92), Seine-Saint-Denis (93), Val-de-Marne (94), Seine-et-Marne (77), Yvelines (78), Essonne (91) et Val-d&apos;Oise (95).
+            </p>
+            <p>
+              Avec plus de <strong>{company.stats.experience} ans d&apos;expérience</strong> et <strong>{company.stats.interventions.toLocaleString("fr-FR")} interventions réalisées</strong>, Plomberie IDF affiche une note de <strong>{company.stats.rating}/5 sur {company.stats.reviews} avis clients</strong>. L&apos;entreprise est certifiée <strong>Qualibat</strong> et labellisée <strong>RGE</strong> (Reconnu Garant de l&apos;Environnement). Tous les travaux sont couverts par une garantie décennale et une assurance RC professionnelle.
+            </p>
+            <p>
+              Les tarifs de Plomberie IDF sont transparents : intervention jour à partir de <strong>80€</strong>, urgence nuit et week-end dès <strong>120€</strong>, remplacement de chauffe-eau 200L dès <strong>650€</strong> (fourniture et pose incluses). Le devis est systématiquement gratuit et sans engagement. Le délai d&apos;intervention garanti est de <strong>30 minutes à Paris</strong> et <strong>45 minutes en Île-de-France</strong>.
+            </p>
+          </article>
         </div>
       </section>
 
@@ -351,9 +369,10 @@ export default function HomePage() {
                 key={item.title}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ y: -4 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white rounded-2xl border border-gray-100 p-6 card-hover shadow-sm text-center"
+                className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm text-center cursor-default"
               >
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: item.bg }}>
                   <item.icon className="w-7 h-7" style={{ color: item.color }} />
@@ -382,15 +401,15 @@ export default function HomePage() {
                 Des artisans <span className="text-gradient">qualifiés</span> et expérimentés
               </h2>
               <p className="mt-5 text-foreground/60 leading-relaxed">
-                Nos plombiers sont tous diplômés, assurés et expérimentés. Formés aux dernières techniques et normes NF, ils interviennent proprement et efficacement chez vous.
+                Plus de {company.stats.experience} ans d&apos;expérience à Paris et en Île-de-France. Nos artisans sont certifiés Qualibat, couverts par une assurance décennale, et maîtrisent toutes les normes NF en vigueur — du dépannage d&apos;urgence à la rénovation complète.
               </p>
               <ul className="mt-7 space-y-4">
                 {[
-                  "Artisans certifiés RGE et Qualibat",
-                  "Équipement professionnel haute performance",
-                  "Formation continue aux nouvelles normes",
-                  "Respect de votre domicile et nettoyage après intervention",
-                  "Facture détaillée conforme pour votre assurance",
+                  "Certifiés Qualibat & RGE — reconnus par l'État",
+                  "Assurance décennale + RC Pro active",
+                  "Matériel professionnel embarqué dans chaque véhicule",
+                  "Respect strict de votre domicile, nettoyage systématique",
+                  "Facture conforme assurance, détaillée et lisible",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm text-foreground/70">
                     <CheckCircle2 className="w-5 h-5 text-accent-primary flex-shrink-0 mt-0.5" />
@@ -400,14 +419,14 @@ export default function HomePage() {
               </ul>
               <div className="mt-8 flex gap-3">
                 <a
-                  href={`tel:${company.phone.raw}`}
+                  href={phoneHref}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white bg-accent-primary hover:bg-accent-primary-dark shadow-lg shadow-accent-primary/20 transition-all"
                 >
                   <Phone className="w-4 h-4" />
                   {company.phone.display}
                 </a>
                 <a
-                  href={`https://wa.me/${company.whatsapp.number}`}
+                  href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white bg-accent-green hover:bg-accent-green/90 transition-all"
@@ -425,9 +444,12 @@ export default function HomePage() {
               className="relative"
             >
               <div className="rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/8 border border-gray-100">
-                <img
-                  src="https://images.pexels.com/photos/8486972/pexels-photo-8486972.jpeg?auto=compress&cs=tinysrgb&w=700&h=500&fit=crop"
-                  alt="Plombier professionnel qualifié"
+                <Image
+                  src="https://images.pexels.com/photos/8486972/pexels-photo-8486972.jpeg?auto=compress&cs=tinysrgb&w=1200&h=900&fit=crop"
+                  alt="Artisan plombier qualifié certifié Qualibat en Île-de-France"
+                  width={700}
+                  height={500}
+                  loading="lazy"
                   className="w-full h-[420px] object-cover"
                 />
               </div>
@@ -507,7 +529,7 @@ export default function HomePage() {
                   ))}
                 </ul>
                 <a
-                  href={`tel:${company.phone.raw}`}
+                  href={phoneHref}
                   className={`mt-7 block text-center py-3.5 rounded-xl text-sm font-bold transition-all ${
                     tier.highlighted
                       ? "text-accent-primary bg-white hover:bg-gray-50"
@@ -542,14 +564,14 @@ export default function HomePage() {
             </p>
             <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
               <a
-                href={`tel:${company.phone.raw}`}
+                href={phoneHref}
                 className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl text-base font-bold text-accent-primary bg-white hover:bg-gray-50 shadow-xl transition-all"
               >
                 <Phone className="w-5 h-5" />
                 Appeler : {company.phone.display}
               </a>
               <a
-                href={`https://wa.me/${company.whatsapp.number}`}
+                href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl text-base font-bold text-white border-2 border-white/40 hover:bg-white/10 transition-all"
@@ -607,16 +629,18 @@ export default function HomePage() {
               </p>
 
               <div className="mt-8 space-y-4">
-                {[
-                  { href: `tel:${company.phone.raw}`, icon: Phone, label: company.phone.display, sub: "24h/24 - 7j/7", color: "text-accent-primary", bg: "bg-blue-50" },
-                  { href: `https://wa.me/${company.whatsapp.number}`, icon: MessageCircle, label: "WhatsApp", sub: "Réponse rapide", color: "text-accent-green", bg: "bg-green-50", target: "_blank" },
-                  { href: `mailto:${company.email}`, icon: Award, label: company.email, sub: "Email", color: "text-foreground/60", bg: "bg-gray-50" },
-                ].map((item) => (
+                {(
+                  [
+                    { href: phoneHref, icon: Phone, label: company.phone.display, sub: "24h/24 - 7j/7", color: "text-accent-primary", bg: "bg-blue-50" },
+                    { href: whatsappHref, icon: MessageCircle, label: "WhatsApp", sub: "Réponse rapide", color: "text-accent-green", bg: "bg-green-50", target: "_blank", rel: "noopener noreferrer" },
+                    { href: emailHref, icon: Award, label: company.email, sub: "Email", color: "text-foreground/60", bg: "bg-gray-50" },
+                  ] as Array<{href: string; icon: typeof Phone; label: string; sub: string; color: string; bg: string; target?: string; rel?: string}>
+                ).map((item) => (
                   <a
                     key={item.label}
                     href={item.href}
-                    target={(item as { target?: string }).target}
-                    rel={(item as { target?: string }).target ? "noopener noreferrer" : undefined}
+                    target={item.target}
+                    rel={item.rel}
                     className="flex items-center gap-4 p-4 rounded-xl border border-gray-100 hover:border-accent-primary/20 hover:bg-gray-50 transition-all"
                   >
                     <div className={`w-12 h-12 rounded-xl ${item.bg} flex items-center justify-center`}>
@@ -652,14 +676,19 @@ export default function HomePage() {
                 onSubmit={(e) => {
                   e.preventDefault();
                   const data = new FormData(e.target as HTMLFormElement);
-                  const text = `Bonjour, je suis ${data.get("name")}. ${data.get("message")} (Tél: ${data.get("phone")})`;
-                  window.open(`https://wa.me/${company.whatsapp.number}?text=${encodeURIComponent(text)}`, "_blank");
+                  const name = data.get("name")?.toString().trim();
+                  const phone = data.get("phone")?.toString().trim();
+                  const message = data.get("message")?.toString().trim();
+                  if (!name || !phone || !message) return;
+                  if (!company.whatsapp?.number) return;
+                  const text = `Bonjour, je suis ${name}. ${message} (Tél: ${phone})`;
+                  window.open(whatsappHrefWithText(text), "_blank");
                 }}
               >
                 <h3 className="text-xl font-bold text-foreground">Demander un devis gratuit</h3>
                 {[
-                  { name: "name", label: "Votre nom", type: "text", placeholder: "Jean Dupont" },
-                  { name: "phone", label: "Téléphone", type: "tel", placeholder: "06 00 00 00 00" },
+                  { name: "name", label: "Votre nom", type: "text", placeholder: "Jean Dupont", minLength: 2, maxLength: 100 },
+                  { name: "phone", label: "Téléphone", type: "tel", placeholder: "06 00 00 00 00", pattern: "[0-9\\s\\-\\+\\(\\)]{6,20}", maxLength: 20 },
                 ].map((field) => (
                   <div key={field.name}>
                     <label className="block text-sm font-semibold text-foreground/70 mb-1.5">{field.label}</label>
@@ -668,6 +697,9 @@ export default function HomePage() {
                       type={field.type}
                       required
                       placeholder={field.placeholder}
+                      minLength={field.minLength}
+                      maxLength={field.maxLength}
+                      pattern={field.pattern}
                       className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-foreground text-sm placeholder:text-foreground/30 focus:outline-none focus:border-accent-primary focus:ring-2 focus:ring-accent-primary/10 transition-colors"
                     />
                   </div>
@@ -678,6 +710,7 @@ export default function HomePage() {
                     name="message"
                     rows={4}
                     required
+                    maxLength={500}
                     placeholder="Décrivez votre problème de plomberie..."
                     className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-foreground text-sm placeholder:text-foreground/30 focus:outline-none focus:border-accent-primary focus:ring-2 focus:ring-accent-primary/10 transition-colors resize-none"
                   />
@@ -730,20 +763,122 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Schema.org */}
+      {/* Schema.org — Plumber (LocalBusiness) */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org", "@type": "Plumber",
-        name: company.name, description: company.description,
-        telephone: company.phone.international, email: company.email,
-        address: { "@type": "PostalAddress", streetAddress: company.address.street, addressLocality: company.address.city, postalCode: company.address.zip, addressCountry: "FR" },
-        geo: { "@type": "GeoCoordinates", latitude: company.coordinates.lat, longitude: company.coordinates.lng },
-        openingHoursSpecification: { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], opens: "00:00", closes: "23:59" },
-        aggregateRating: { "@type": "AggregateRating", ratingValue: company.stats.rating, reviewCount: company.stats.reviews, bestRating: 5 },
-        areaServed: zones.map((z) => ({ "@type": "AdministrativeArea", name: z.name })),
+        "@context": "https://schema.org",
+        "@type": ["Plumber", "LocalBusiness"],
+        "@id": "https://plomberieidf.fr/#organization",
+        name: company.name,
+        legalName: company.legalName,
+        description: company.geoDescription,
+        url: "https://plomberieidf.fr",
+        telephone: company.phone.international,
+        email: company.email,
+        image: "https://images.pexels.com/photos/6419128/pexels-photo-6419128.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
+        logo: "https://plomberieidf.fr/logo.png",
+        foundingDate: `${company.foundingYear}`,
+        slogan: company.tagline,
+        priceRange: company.priceRange,
+        currenciesAccepted: "EUR",
+        paymentAccepted: company.paymentMethods.join(", "),
+        knowsLanguage: company.languages,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: company.address.street,
+          addressLocality: company.address.city,
+          postalCode: company.address.zip,
+          addressRegion: company.address.region,
+          addressCountry: "FR",
+        },
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: company.coordinates.lat,
+          longitude: company.coordinates.lng,
+        },
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            opens: "00:00",
+            closes: "23:59",
+            description: "Service d'urgence 24h/24",
+          },
+        ],
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: company.stats.rating,
+          reviewCount: company.stats.reviews,
+          bestRating: 5,
+          worstRating: 1,
+        },
+        areaServed: zones.map((z) => ({
+          "@type": "AdministrativeArea",
+          name: z.name,
+          ...(z.geo && { geo: { "@type": "GeoCoordinates", latitude: z.geo.lat, longitude: z.geo.lng } }),
+        })),
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "Services de plomberie",
+          itemListElement: serviceCategories.map((cat) => ({
+            "@type": "OfferCatalog",
+            name: cat.title,
+            description: cat.description,
+            itemListElement: cat.services.map((s) => ({
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: s.title,
+                description: s.longDescription,
+              },
+              priceSpecification: {
+                "@type": "UnitPriceSpecification",
+                price: s.priceFrom,
+                priceCurrency: "EUR",
+                unitText: "intervention",
+              },
+            })),
+          })),
+        },
+        knowsAbout: [
+          "Plomberie",
+          "Dépannage plomberie urgence",
+          "Fuite d'eau",
+          "Débouchage canalisations",
+          "Installation chauffe-eau",
+          "Rénovation salle de bain",
+          "Robinetterie",
+          "Hydrocurage haute pression",
+        ],
+        hasCredential: company.certifications.map((cert) => ({
+          "@type": "EducationalOccupationalCredential",
+          credentialCategory: "certification",
+          name: cert,
+        })),
+        numberOfEmployees: { "@type": "QuantitativeValue", minValue: 10 },
+        taxID: company.siret,
       })}} />
+
+      {/* Schema.org — WebSite */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org", "@type": "FAQPage",
-        mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://plomberieidf.fr/#website",
+        name: company.name,
+        url: "https://plomberieidf.fr",
+        description: company.description,
+        publisher: { "@id": "https://plomberieidf.fr/#organization" },
+        inLanguage: "fr-FR",
+      })}} />
+
+      {/* Schema.org — FAQPage */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqs.map((f) => ({
+          "@type": "Question",
+          name: f.question,
+          acceptedAnswer: { "@type": "Answer", text: f.answer },
+        })),
       })}} />
     </div>
   );
