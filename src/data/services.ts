@@ -406,6 +406,56 @@ export const serviceCategories: ServiceCategory[] = [
       },
     ],
   },
+
+  // ─── 7. ENTRETIEN CHAUDIÈRE & BALLON ──────────────────────────────────────
+  {
+    id: "entretien-chaudiere-ballon",
+    title: "Entretien Chaudière & Ballon",
+    subtitle: "Toutes marques",
+    description:
+      "Entretien annuel de votre chaudière (gaz, fioul, condensation) et de votre ballon d'eau chaude. Plombier-chauffagiste certifié, attestation d'entretien remise. Forfait HT hors déplacement et pièces.",
+    icon: "ShieldCheck",
+    color: "accent-teal",
+    colorHex: "#14B8A6",
+    // Plumber installing pipe — technicien chauffagiste au travail
+    image: px(6419128),
+    services: [
+      {
+        id: "entretien-chaudiere",
+        title: "Entretien chaudière annuel",
+        description: "Gaz, fioul, condensation — multi-marque",
+        longDescription:
+          "Entretien annuel obligatoire (décret 2009-649) de votre chaudière. Nettoyage du brûleur, contrôle de la combustion, mesure du CO, vérification des organes de sécurité, attestation d'entretien remise. Toutes marques : Saunier Duval, Frisquet, De Dietrich, Vaillant, ELM Leblanc, Chappée, Bosch, Viessmann. Forfait à partir de 155 € HT, hors déplacement et pièces.",
+        priceFrom: 155,
+        // Plumber installing pipe — entretien chaudière par un pro
+        image: px(6419128, 600, 400),
+        features: [
+          "Multi-marque",
+          "Attestation d'entretien",
+          "Contrôle CO + combustion",
+          "Nettoyage brûleur",
+          "Forfait HT (hors déplacement & pièces)",
+        ],
+      },
+      {
+        id: "entretien-ballon",
+        title: "Entretien ballon d'eau chaude",
+        description: "Détartrage, anode, groupe sécurité",
+        longDescription:
+          "Entretien complet de votre ballon d'eau chaude : détartrage de la résistance, contrôle de l'anode magnésium, vérification du groupe de sécurité, contrôle du thermostat. Toutes marques : Atlantic, Thermor, De Dietrich, Sauter, Ariston, Chaffoteaux. Forfait à partir de 175 € HT, hors déplacement et pièces.",
+        priceFrom: 175,
+        // Gray water heater — ballon d'eau chaude entretien
+        image: px(9551366, 600, 400),
+        features: [
+          "Multi-marque",
+          "Détartrage résistance",
+          "Contrôle anode magnésium",
+          "Vérification groupe sécurité",
+          "Forfait HT (hors déplacement & pièces)",
+        ],
+      },
+    ],
+  },
 ];
 
 export function getCategoryBySlug(slug: string) {

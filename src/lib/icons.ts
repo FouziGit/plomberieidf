@@ -1,4 +1,4 @@
-import { Droplets, RotateCcw, Flame, Wrench, Bath, AlertTriangle } from "lucide-react";
+import { Droplets, RotateCcw, Flame, Wrench, Bath, AlertTriangle, ShieldCheck } from "lucide-react";
 
 export const iconMap: Record<string, React.ElementType> = {
   Droplets,
@@ -7,4 +7,5 @@ export const iconMap: Record<string, React.ElementType> = {
   Wrench,
   Bath,
   AlertTriangle,
+  ShieldCheck,
 };
