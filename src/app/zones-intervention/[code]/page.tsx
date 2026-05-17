@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
   const delay = (zone.responseTime ?? "45 minutes").replace(" minutes", "");
   return {
     title: `Plombier ${zone.name} (${zone.code}) | Urgence 24h/24 - Dès 80€`,
-    description: `Plombier urgence ${zone.name} (${zone.code}) — arrivée en ${delay} min. Fuite d'eau, débouchage, chauffe-eau à ${city} et ${zone.cities.length} villes du ${zone.code}. Devis gratuit, artisan certifié Qualibat. 4.9/5 sur 523 avis. ☎ 07 65 82 26 26`,
+    description: `Plombier urgence ${zone.name} (${zone.code}) — arrivée en ${delay} min. Fuite d'eau, débouchage, chauffe-eau à ${city} et ${zone.cities.length} villes du ${zone.code}. Devis gratuit, artisan certifié Qualibat. 4.9/5 sur 523 avis. ☎ 09 83 92 92 92`,
     keywords: [
       `plombier ${zone.name.toLowerCase()}`,
       `plombier ${zone.code}`,
@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
     twitter: {
       card: "summary",
       title: `Plombier ${zone.name} (${zone.code}) | 24h/24`,
-      description: `Dépannage plomberie en ${delay} min dans le ${zone.code}. ☎ 07 65 82 26 26`,
+      description: `Dépannage plomberie en ${delay} min dans le ${zone.code}. ☎ 09 83 92 92 92`,
     },
     other: {
       "geo.region": `FR-${zone.code}`,

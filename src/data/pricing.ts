@@ -92,6 +92,6 @@ export const faqs: FAQ[] = [
   {
     question: "Que faire en cas de fuite d'eau urgente ?",
     answer:
-      "En cas de fuite d'eau urgente : 1) Coupez immédiatement l'arrivée d'eau au robinet d'arrêt général. 2) Coupez l'électricité si l'eau atteint des prises ou appareils électriques. 3) Protégez vos biens en plaçant des serpillières ou bassines. 4) Appelez un plombier d'urgence (Plomberie IDF : 07 65 82 26 26, arrivée en 30 minutes à Paris). 5) Prévenez votre assurance dans les 5 jours pour la déclaration de sinistre.",
+      "En cas de fuite d'eau urgente : 1) Coupez immédiatement l'arrivée d'eau au robinet d'arrêt général. 2) Coupez l'électricité si l'eau atteint des prises ou appareils électriques. 3) Protégez vos biens en plaçant des serpillières ou bassines. 4) Appelez un plombier d'urgence (Plomberie IDF : 09 83 92 92 92, arrivée en 30 minutes à Paris). 5) Prévenez votre assurance dans les 5 jours pour la déclaration de sinistre.",
   },
 ];

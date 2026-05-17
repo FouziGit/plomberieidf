@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const minPrice = Math.min(...category.services.map((s) => s.priceFrom));
   return {
     title: `${category.title} Paris & IDF | Dès ${minPrice}€ - Plombier 24h/24`,
-    description: `${category.description} Intervention en 30 min à Paris. Devis gratuit, à partir de ${minPrice}€. Artisan certifié Qualibat, garantie décennale. ☎ 07 65 82 26 26`,
+    description: `${category.description} Intervention en 30 min à Paris. Devis gratuit, à partir de ${minPrice}€. Artisan certifié Qualibat, garantie décennale. ☎ 09 83 92 92 92`,
     alternates: { canonical: `/services/${id}` },
     openGraph: {
       title: `${category.title} Paris & IDF | Dès ${minPrice}€`,
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     twitter: {
       card: "summary",
       title: `${category.title} Paris & IDF | Dès ${minPrice}€`,
-      description: `${category.description} ☎ 07 65 82 26 26`,
+      description: `${category.description} ☎ 09 83 92 92 92`,
     },
   };
 }

@@ -16,12 +16,12 @@ export const company = {
     full: "75 Rue de Lourmel, 75015 Paris",
   },
   phone: {
-    raw: "+33765822626",
-    display: "07 65 82 26 26",
-    international: "+33 7 65 82 26 26",
+    raw: "+33983929292",
+    display: "09 83 92 92 92",
+    international: "+33 9 83 92 92 92",
   },
   whatsapp: {
-    number: "33765822626",
+    number: "33765828585",
     message:
       "Bonjour, je souhaite un devis ou une intervention en plomberie.",
   },
