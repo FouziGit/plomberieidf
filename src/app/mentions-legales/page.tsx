@@ -54,6 +54,22 @@ export default function MentionsLegalesPage() {
             propriété intellectuelle. Toute reproduction est interdite sans autorisation préalable.
           </p>
         </section>
+
+        <section>
+          <h2 className="text-lg font-bold text-foreground">Conception &amp; réalisation</h2>
+          <p>
+            Ce site a été conçu et réalisé par <strong className="text-foreground">Nouh Benzidane</strong>, développeur web freelance.<br />
+            Portfolio :{" "}
+            <a
+              href="https://nouhbenzidane.fr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent-primary hover:underline"
+            >
+              nouhbenzidane.fr
+            </a>
+          </p>
+        </section>
       </div>
     </div>
   );

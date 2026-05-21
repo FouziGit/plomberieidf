@@ -142,6 +142,19 @@ export function Footer() {
               </Link>
             </div>
           </div>
+          <div className="mt-4 pt-4 border-t border-gray-800/50 text-center">
+            <p className="text-xs text-gray-500">
+              Site r&eacute;alis&eacute; par{" "}
+              <a
+                href="https://nouhbenzidane.fr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent-primary-light hover:text-white transition-colors font-medium"
+              >
+                Nouh Benzidane
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>
