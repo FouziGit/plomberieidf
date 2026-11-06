@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: { params: Promise<{ code: str
     openGraph: {
       title: `Plombier ${zone.name} (${zone.code}) | Urgence 24h/24`,
       description: `Intervention rapide en ${delay} min dans le ${zone.code}. ${zone.cities.length} villes couvertes. Devis gratuit. 4.9/5.`,
-      url: `https://plomberieidf.fr/zones-intervention/${zone.code}`,
+      url: `https://plombiersidf.fr/zones-intervention/${zone.code}`,
       type: "website",
       locale: "fr_FR",
     },
@@ -392,7 +392,7 @@ export default async function ZonePage({ params }: { params: Promise<{ code: str
         description: ctx.desc,
         telephone: company.phone.international,
         email: company.email,
-        url: `https://plomberieidf.fr/zones-intervention/${zone.code}`,
+        url: `https://plombiersidf.fr/zones-intervention/${zone.code}`,
         image: "https://images.pexels.com/photos/6419128/pexels-photo-6419128.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
         priceRange: company.priceRange,
         currenciesAccepted: "EUR",
@@ -460,16 +460,16 @@ export default async function ZonePage({ params }: { params: Promise<{ code: str
           credentialCategory: "certification",
           name: cert,
         })),
-        isRelatedTo: { "@id": "https://plomberieidf.fr/#organization" },
-        mainEntityOfPage: `https://plomberieidf.fr/zones-intervention/${zone.code}`,
+        isRelatedTo: { "@id": "https://plombiersidf.fr/#organization" },
+        mainEntityOfPage: `https://plombiersidf.fr/zones-intervention/${zone.code}`,
       })}} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Accueil", item: "https://plomberieidf.fr/" },
-          { "@type": "ListItem", position: 2, name: "Zones d'intervention", item: "https://plomberieidf.fr/zones-intervention" },
-          { "@type": "ListItem", position: 3, name: `${zone.name} (${zone.code})`, item: `https://plomberieidf.fr/zones-intervention/${zone.code}` },
+          { "@type": "ListItem", position: 1, name: "Accueil", item: "https://plombiersidf.fr/" },
+          { "@type": "ListItem", position: 2, name: "Zones d'intervention", item: "https://plombiersidf.fr/zones-intervention" },
+          { "@type": "ListItem", position: 3, name: `${zone.name} (${zone.code})`, item: `https://plombiersidf.fr/zones-intervention/${zone.code}` },
         ],
       })}} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({

@@ -160,8 +160,8 @@ export default function ZonesPage() {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Accueil", item: "https://plomberieidf.fr/" },
-          { "@type": "ListItem", position: 2, name: "Zones d'intervention", item: "https://plomberieidf.fr/zones-intervention" },
+          { "@type": "ListItem", position: 1, name: "Accueil", item: "https://plombiersidf.fr/" },
+          { "@type": "ListItem", position: 2, name: "Zones d'intervention", item: "https://plombiersidf.fr/zones-intervention" },
         ],
       })}} />
     </div>

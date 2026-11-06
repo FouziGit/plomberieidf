@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     openGraph: {
       title: `${category.title} Paris & IDF | Dès ${minPrice}€`,
       description: `${category.description} ${company.stats.rating}/5 sur ${company.stats.reviews} avis. Devis gratuit.`,
-      url: `https://plomberieidf.fr/services/${id}`,
+      url: `https://plombiersidf.fr/services/${id}`,
       type: "website",
       locale: "fr_FR",
     },
@@ -325,15 +325,15 @@ export default async function ServicePage({ params }: { params: Promise<{ id: st
             "@type": "Service",
             name: `${category.title} Paris & Île-de-France`,
             description: category.description,
-            url: `https://plomberieidf.fr/services/${id}`,
+            url: `https://plombiersidf.fr/services/${id}`,
             image: category.image,
             serviceType: category.title,
             provider: {
-              "@id": "https://plomberieidf.fr/#organization",
+              "@id": "https://plombiersidf.fr/#organization",
               "@type": "Plumber",
               name: company.name,
               telephone: company.phone.international,
-              url: "https://plomberieidf.fr",
+              url: "https://plombiersidf.fr",
               address: {
                 "@type": "PostalAddress",
                 streetAddress: company.address.street,
@@ -400,9 +400,9 @@ export default async function ServicePage({ params }: { params: Promise<{ id: st
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Accueil", item: "https://plomberieidf.fr/" },
-              { "@type": "ListItem", position: 2, name: "Services", item: "https://plomberieidf.fr/#services" },
-              { "@type": "ListItem", position: 3, name: category.title, item: `https://plomberieidf.fr/services/${id}` },
+              { "@type": "ListItem", position: 1, name: "Accueil", item: "https://plombiersidf.fr/" },
+              { "@type": "ListItem", position: 2, name: "Services", item: "https://plombiersidf.fr/#services" },
+              { "@type": "ListItem", position: 3, name: category.title, item: `https://plombiersidf.fr/services/${id}` },
             ],
           }),
         }}

@@ -2,6 +2,12 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { company } from "@/data/company";
 
+// Own canonical: the root layout's canonical "/" would otherwise point this page to the home.
+export const metadata = {
+  title: "Mentions légales",
+  alternates: { canonical: "/mentions-legales/" },
+};
+
 export default function MentionsLegalesPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20">

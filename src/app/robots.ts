@@ -15,7 +15,7 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "anthropic-ai", allow: "/" },
       { userAgent: "Bingbot", allow: "/" },
     ],
-    sitemap: "https://plomberieidf.fr/sitemap.xml",
-    host: "https://plomberieidf.fr",
+    sitemap: "https://plombiersidf.fr/sitemap.xml",
+    host: "https://plombiersidf.fr",
   };
 }

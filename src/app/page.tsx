@@ -767,15 +767,15 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": ["Plumber", "LocalBusiness"],
-        "@id": "https://plomberieidf.fr/#organization",
+        "@id": "https://plombiersidf.fr/#organization",
         name: company.name,
         legalName: company.legalName,
         description: company.geoDescription,
-        url: "https://plomberieidf.fr",
+        url: "https://plombiersidf.fr",
         telephone: company.phone.international,
         email: company.email,
         image: "https://images.pexels.com/photos/6419128/pexels-photo-6419128.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop",
-        logo: "https://plomberieidf.fr/logo.png",
+        logo: "https://plombiersidf.fr/logo.png",
         foundingDate: `${company.foundingYear}`,
         slogan: company.tagline,
         priceRange: company.priceRange,
@@ -862,11 +862,11 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "@id": "https://plomberieidf.fr/#website",
+        "@id": "https://plombiersidf.fr/#website",
         name: company.name,
-        url: "https://plomberieidf.fr",
+        url: "https://plombiersidf.fr",
         description: company.description,
-        publisher: { "@id": "https://plomberieidf.fr/#organization" },
+        publisher: { "@id": "https://plombiersidf.fr/#organization" },
         inLanguage: "fr-FR",
       })}} />
 

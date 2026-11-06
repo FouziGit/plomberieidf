@@ -13,7 +13,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://plomberieidf.fr"),
+  metadataBase: new URL("https://plombiersidf.fr"),
   title: {
     default: "Plombier Paris & Île-de-France | Dépannage Urgence 24h/24 7j/7 - Plomberie IDF",
     template: "%s — Plomberie IDF",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Plombier Paris & Île-de-France | Dépannage Urgence 24h/24",
     description: `${company.description} ${company.stats.rating}/5 (${company.stats.reviews} avis). Devis gratuit.`,
-    url: "https://plomberieidf.fr",
+    url: "https://plombiersidf.fr",
     siteName: company.name,
     type: "website",
     locale: "fr_FR",
